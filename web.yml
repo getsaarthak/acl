@@ -1,0 +1,77 @@
+- hosts: nodes
+
+  become: yes
+
+  tasks:
+
+    - name: create directory if they don't exist
+
+      file:
+
+        path: "{{ item }}"
+
+        state: directory
+
+        owner: root
+
+        group: root
+
+        mode: 0775
+
+      with_items:
+
+        - /mukee/project1
+
+        - /mukee/project2
+
+ 
+
+    - name: Add the users needed for ACL
+
+      user:
+
+        name: "{{ item.name }}"
+
+      with_items:
+
+        - { name : "ncsi" }
+
+        - { name : "raju" }
+
+        - { name : "mukesh" }
+
+        - { name : "nishant" }
+
+ 
+
+    - name: Add some ACL's
+
+      acl:
+
+       path : "{{ item.path }}"
+
+        entity : "{{ item.entity }}"
+
+        etype : "{{ item.etype }}"
+
+        permissions : "{{ item.permissions }}"
+
+        state : present
+
+      with_items:
+
+        - { path : "/mukee/project1/", entity : "ncsi", etype: "user", permissions: "rx" }
+
+        - { path : "/mukee/project1/", entity : "raju", etype: "user", permissions: "r" }
+
+        - { path : "/mukee/project1/", entity : "mukesh", etype: "user", permissions: "rw" }
+
+        - { path : "/mukee/project1//", entity : "nishant", etype: "user", permissions: "rwx" }
+
+        - { path : "/mukee/project2/", entity : "ncsi", etype: "user", permissions: "rx" }
+
+        - { path : "/mukee/project2/", entity : "raju", etype: "user", permissions: "r" }
+
+        - { path : "/mukee/project2/", entity : "mukesh", etype: "user", permissions: "rw" }
+
+        - { path : "/mukee/project2//", entity : "nishant", etype: "user", permissions: "rwx" }
