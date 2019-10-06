@@ -1,0 +1,10 @@
+[master]
+192.168.8.60
+[node1]
+192.168.8.61
+[node2]
+192.168.8.62
+[nodes:children]
+master
+node1
+node
