@@ -1,3 +1,4 @@
+---
 - hosts: nodes
 
   become: yes
@@ -48,7 +49,7 @@
 
       acl:
 
-       path : "{{ item.path }}"
+        path : "{{ item.path }}"
 
         entity : "{{ item.entity }}"
 
