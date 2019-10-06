@@ -1,0 +1,28 @@
+node {
+	notify('Started')
+	stage 'checkout'
+	    git 'https://github.com/getsaarthak/acl.git'
+
+    stage 'Disk Usage'
+    sh 'chmod 777 disk_usage.sh'
+    sh 'sh disk_usage.sh'
+    
+    stage 'Setting ACL'
+    sh 'chmod 777 acl.sh'
+    sh 'sh acl.sh'
+    
+	stage 'archival'
+		archiveArtifacts 'disk_usage_report.txt'
+		archiveArtifacts 'getfacl_output.txt'
+	
+	notify('Done')
+}
+
+def notify(status){
+    emailext (
+      to: "getsaarthak@gmail.com",
+      subject: "${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+      body: """<p>${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        <p>Check console output at <a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>""",
+    )
+}
