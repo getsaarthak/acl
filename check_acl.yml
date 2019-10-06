@@ -1,0 +1,20 @@
+---
+- hosts: nodes
+
+  become: yes
+
+  tasks:
+
+    - name: Verifying ACL (getfacl) on /mukee/project1 directories
+      command: 'getfacl /mukee/project1'
+      register: project1_output
+
+    - debug:
+        var: project1_output
+
+    - name: Verifying ACL (getfacl) on /mukee/project2 directories
+      command: 'getfacl /mukee/project2'
+      register: project2_output
+
+    - debug:
+        var: project2_output
